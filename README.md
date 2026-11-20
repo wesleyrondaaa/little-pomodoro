@@ -4,7 +4,7 @@
 
 # Little Pomodoro
 
-[![Build and test](https://github.com/wesleyrondaaa/pomodoro-timer/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/wesleyrondaaa/pomodoro-timer/actions/workflows/ci.yml)
+[![Build and test](https://github.com/wesleyrondaaa/little-pomodoro/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/wesleyrondaaa/little-pomodoro/actions/workflows/ci.yml)
 
 A small, portable Windows timer. One executable, no installer, console window,
 JavaScript, PowerShell runtime scripts, third-party packages, or administrator access.
@@ -12,7 +12,7 @@ Uses the .NET Framework and Windows Forms included with Windows 10 and 11.
 
 ## Run
 
-[Download LittlePomodoro.exe](https://github.com/wesleyrondaaa/pomodoro-timer/releases/latest/download/LittlePomodoro.exe)
+[Download LittlePomodoro.exe](https://github.com/wesleyrondaaa/little-pomodoro/releases/latest/download/LittlePomodoro.exe)
 from the latest release.
 
 Double-click **LittlePomodoro.exe**. You can move just that file to any directory
