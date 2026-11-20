@@ -6,104 +6,132 @@
 
 [![Build and test](https://github.com/wesleyrondaaa/little-pomodoro/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/wesleyrondaaa/little-pomodoro/actions/workflows/ci.yml)
 
-A small, portable Windows timer. One executable, no installer, console window,
-JavaScript, PowerShell runtime scripts, third-party packages, or administrator access.
-Uses the .NET Framework and Windows Forms included with Windows 10 and 11.
+Little Pomodoro is a small timer for Windows 10 and 11.
+It requires .NET Framework 4.8 and uses Windows Forms.
+The application has one executable file.
+It does not require an installer, a console window, or administrator access.
+It does not use JavaScript, PowerShell scripts, or third-party runtime packages.
 
-## Run
+## Start the application
 
-[Download LittlePomodoro.exe](https://github.com/wesleyrondaaa/little-pomodoro/releases/latest/download/LittlePomodoro.exe)
-from the latest release.
+1. [Download LittlePomodoro.exe](https://github.com/wesleyrondaaa/little-pomodoro/releases/latest/download/LittlePomodoro.exe).
+2. Put the file in a folder that you can write to, such as `%LOCALAPPDATA%\LittlePomodoro`.
+3. Double-click **LittlePomodoro.exe**.
 
-Double-click **LittlePomodoro.exe**. You can move just that file to any directory
-you own, such as `%LOCALAPPDATA%\LittlePomodoro`. No other app files are needed.
-Closing a command prompt will not close the timer. Close its own window to exit.
-An unsigned download may trigger Windows SmartScreen; only run binaries you trust.
-Building the source yourself is also an option.
-Managed Windows machines may block locally built executables through application
-control policy. If Windows reports a group-policy block, your administrator must
-approve the trusted application; the app does not bypass those protections.
+No other application files are necessary.
+You can close the command prompt without stopping the timer.
+To stop the application, close its window.
 
-## Build your own EXE
+The executable has no digital signature.
+Windows SmartScreen can show a warning.
+Only run executables from a source that you trust.
+You can also build the application from its source code.
 
-Install a current .NET SDK for development, then open a terminal in the repository:
+Your organization's policy can block the executable.
+If Windows reports a policy block, ask your administrator to approve the application.
+The application does not bypass these controls.
+
+## Build the executable
+
+1. Install the .NET 10 SDK.
+2. Open a terminal in the repository folder.
+3. Run this command:
 
 ```powershell
 dotnet build -c Release
 ```
 
-The output is **bin\Release\net48\LittlePomodoro.exe**. Copy just that EXE to your
-user tools directory. Close any running copy before replacing it.
+The output file is **bin\Release\net48\LittlePomodoro.exe**.
+Close the application before you replace its executable.
+Copy only the executable to your preferred folder.
 
-[LittlePomodoro.csproj](LittlePomodoro.csproj) tells the SDK to compile
-[Pomodoro.cs](Pomodoro.cs) as a Windows GUI app targeting .NET Framework 4.8.
-The SDK may download Microsoft's reference assemblies from NuGet on the first
-build if the targeting pack is missing. These are build-time only; users need
-neither the SDK nor extra runtime packages.
+The SDK uses [LittlePomodoro.csproj](LittlePomodoro.csproj) to compile [Pomodoro.cs](Pomodoro.cs) for .NET Framework 4.8.
+If necessary, the SDK downloads Microsoft's reference assemblies from NuGet.
+These files are necessary only to build the application.
+Users do not need the SDK or additional runtime packages.
 
-The [manifest](app.manifest) is embedded in the EXE: it requests normal user
-permissions (`asInvoker`) and correct display scaling. The EXE is not a script
-wrapper or a sandbox.
+The executable contains the [manifest](app.manifest) and [tomato icon](tomato.ico).
+The manifest sets normal user permissions (`asInvoker`) and display scaling.
+The application is not a script wrapper or a security sandbox.
 
-Only the EXE is needed to run. The remaining files are for development:
+The other repository files support development:
 
-- [Pomodoro.cs](Pomodoro.cs): timer and native interface.
-- [LittlePomodoro.csproj](LittlePomodoro.csproj): standard .NET build configuration.
-- [app.manifest](app.manifest): embedded permissions and display settings.
-- [tomato.ico](tomato.ico): original pixel-art tomato icon, embedded in the EXE.
-- [logo.png](logo.png): the same tomato artwork for this README.
-- [tests/](tests/): test source, excluded from the app.
-- This README, [LICENSE](LICENSE), and [.gitignore](.gitignore): documentation,
- open-source terms, and generated-file exclusions.
+- [logo.png](logo.png) contains the tomato image for this README.
+- [tests/](tests/) contains test source code.
+- [CONTRIBUTING.md](CONTRIBUTING.md) gives instructions for contributors.
+- [LICENSE](LICENSE) contains the license terms.
+- [.gitignore](.gitignore) excludes generated files from Git.
 
-## Using the timer
+## Use the timer
 
-- Defaults: 25-minute focus, 5-minute short break, 15-minute long break.
-- Every fourth completed focus session prepares a long break.
-- The next timer waits for you to press **Start**; it never starts automatically.
-- Pause/resume preserves remaining time.
-- Reset or switching modes restarts the selected timer without counting a session.
-- Change durations from 1 to 180 whole minutes and press **Apply minutes**.
-  Applying restarts the current timer.
-- **Completion sound** opts into a Windows system sound. Mute and Windows sound
-  settings apply.
-- **Show window when done** is enabled by default. Completing focus or a break
-  restores a minimized timer and requests focus. Disable it to leave the window
-  in the background. Windows may restrict focus stealing while you use other apps.
-- Closing the app resets settings and session counts. Nothing is saved.
+The default durations are 25 minutes for focus, 5 minutes for a short break, and 15 minutes for a long break.
+Each fourth completed focus session gives you a long break.
+The next session does not start automatically.
 
-Timing uses a UTC deadline rather than counting ticks, so delayed UI callbacks do
-not accumulate drift. Sleep suspends execution: the timer catches up when Windows
-resumes, but the sound will be delayed. The app does not prevent sleep or wake the
-machine. Manually changing the system clock can affect remaining time.
-The UI timer stops completely while idle or paused.
+- Select **Start** to start a session.
+- Select **Pause** to stop the timer temporarily.
+- Select **Resume** to continue with the remaining time.
+- Select **Reset** to reset the selected timer.
+- Select a different mode to reset the timer for that mode.
+
+Resetting the timer or changing its mode does not increase the completed session count.
+The timer does not run while it is ready or paused.
+
+### Change the settings
+
+1. Set each duration to a whole number from 1 to 180 minutes.
+2. Select **Apply minutes**.
+
+This resets the selected timer.
+
+- Select **Completion sound** to enable the Windows system sound.
+  Windows volume and sound settings apply.
+- Keep **Show window when done** selected to restore the minimized window when a session ends.
+  This option is on by default.
+  Clear it to leave the window in the background.
+  Windows can prevent the application from taking focus.
+
+Closing the application resets all settings and session counts.
+The application does not save them.
+
+### Timing limits
+
+The timer uses a UTC deadline instead of counting update events.
+A delayed update does not add timing errors.
+When Windows resumes from sleep, the timer updates the remaining time.
+Sleep delays the completion sound and window restoration.
+The application does not prevent sleep or wake the computer.
+Changing the system clock can change the remaining time.
 
 ## Privacy
 
-The app makes no network requests and records no telemetry. It installs no
-services, scheduled tasks, startup entries, or files outside its own executable.
-It does not read your documents or save settings. Windows may retain its normal
-diagnostic records.
+The application does not make network requests or record usage data.
+It does not install services, scheduled tasks, startup entries, or additional files.
+It does not read your documents or save settings.
+Windows can keep its normal diagnostic records.
 
-## Tests
+## Run the tests
+
+Run this command from the repository folder:
 
 ```powershell
 dotnet run --project .\tests\LittlePomodoro.Tests.csproj -c Release
 ```
 
-This builds the app and a dependency-free test executable, then checks timer
-behavior, duration validation, native controls, the Windows GUI subsystem,
-survival after a launching command prompt exits, and clean shutdown. Tests
-briefly open and close windows and need an interactive Windows desktop.
+This command builds the application and a test executable.
+The tests check timing, duration limits, controls, window restoration, and process exit.
+They also check that the application runs without a console window.
+The tests open and close windows.
+They require an interactive Windows desktop.
 
-## Sharing and open source
+[GitHub Actions](.github/workflows/ci.yml) builds and tests the application for pushes and pull requests.
+It does not publish releases or install the application.
 
-Share **LittlePomodoro.exe** directly, or attach it to a GitHub Release. An installer
-or WinGet package is optional, not needed to run it. Generated binaries are ignored
-by Git; keep the source and project files in the repository.
+## Share the application
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development and pull request guidance.
-[GitHub Actions](.github/workflows/ci.yml) builds and runs tests on Windows for
-pushes and pull requests. It does not publish or deploy anything.
+Share **LittlePomodoro.exe**, or attach it to a GitHub Release.
+Users do not need an installer or a WinGet package.
+Keep the source and project files in the repository.
+Do not commit generated executables.
 
-Licensed under [MIT](LICENSE).
+The [MIT license](LICENSE) applies to this project.
