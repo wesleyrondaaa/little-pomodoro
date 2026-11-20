@@ -27,7 +27,12 @@ check exits with a nonzero code so local and CI failures are visible.
 - Run the build and tests, and report any checks you could not run.
 - Do not commit generated EXEs, `bin`/`obj` folders, credentials, or personal data.
 
-GitHub Actions builds and runs the tests on Windows for pushes and pull requests.
+GitHub Actions builds and runs the tests on Windows for pushes to `main` and pull requests.
+You can also start the workflow manually.
+Feature branches run through pull request checks, not duplicate push checks.
+Restore, build, and tests share one job because each step needs the previous step.
+Separate runners would repeat setup and require build artifact transfers.
+CI runs the compiled test executable directly and limits that step to two minutes.
 It does not publish releases or install the app. Workflow action commits are
 recorded in [actions.lock](.github/workflows/actions.lock). Verify upstream
 releases before changing action versions, then run `gh actions-lock` and

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using LittlePomodoro;
 
@@ -188,10 +189,21 @@ internal static class Tests
             start.RedirectStandardOutput = true;
             using (Process commandPrompt = Process.Start(start))
             {
-                if (!commandPrompt.WaitForExit(10000)) throw new Exception("Launcher did not exit.");
-                Equal(commandPrompt.ExitCode, 0, "Launcher exits successfully");
-                int id = int.Parse(commandPrompt.StandardOutput.ReadToEnd().Trim(), CultureInfo.InvariantCulture);
-                app = Process.GetProcessById(id);
+                try
+                {
+                    // The running GUI can inherit the pipe, so EOF need not follow launcher exit.
+                    Task<string> output = commandPrompt.StandardOutput.ReadLineAsync();
+                    if (!output.Wait(5000)) throw new Exception("Launcher did not report the timer process ID.");
+                    if (output.Result == null) throw new Exception("Launcher closed output without a timer process ID.");
+                    int id = int.Parse(output.Result.Trim(), CultureInfo.InvariantCulture);
+                    app = Process.GetProcessById(id);
+                    if (!commandPrompt.WaitForExit(10000)) throw new Exception("Launcher did not exit.");
+                    Equal(commandPrompt.ExitCode, 0, "Launcher exits successfully");
+                }
+                finally
+                {
+                    if (!commandPrompt.HasExited) commandPrompt.Kill();
+                }
             }
             Stopwatch wait = Stopwatch.StartNew();
             do

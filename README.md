@@ -124,7 +124,8 @@ They also check that the application runs without a console window.
 The tests open and close windows.
 They require an interactive Windows desktop.
 
-[GitHub Actions](.github/workflows/ci.yml) builds and tests the application for pushes and pull requests.
+[GitHub Actions](.github/workflows/ci.yml) builds and tests the application for pushes to `main` and pull requests.
+You can also start the workflow manually.
 It does not publish releases or install the application.
 
 ## Share the application
