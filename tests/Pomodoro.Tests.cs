@@ -197,6 +197,8 @@ internal static class Tests
                     if (output.Result == null) throw new Exception("Launcher closed output without a timer process ID.");
                     int id = int.Parse(output.Result.Trim(), CultureInfo.InvariantCulture);
                     app = Process.GetProcessById(id);
+                    // Retain a handle before exit so .NET Framework can read the exit code afterward.
+                    _ = app.Handle;
                     if (!commandPrompt.WaitForExit(10000)) throw new Exception("Launcher did not exit.");
                     Equal(commandPrompt.ExitCode, 0, "Launcher exits successfully");
                 }
